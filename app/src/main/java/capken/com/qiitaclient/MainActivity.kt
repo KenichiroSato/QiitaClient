@@ -2,6 +2,7 @@ package capken.com.qiitaclient
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ListView
 import capken.com.qiitaclient.model.Article
 import capken.com.qiitaclient.model.User
 import capken.com.qiitaclient.view.ArticleView
@@ -11,16 +12,20 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val articleView = ArticleView(applicationContext)
+        setContentView(R.layout.activity_main)
 
-        articleView.setArticle(Article(id = "123",
-                title = "Koblin 入門",
-                url = "http://www.example",
-                user = User(id = "456", name = "Taro", profileImageUrl = "")))
+        val listAdapter = ArticleListAdapter(applicationContext)
+        listAdapter.articles = listOf(dummyArticle("title1", "name1"), dummyArticle("title2", "name2"))
 
-        setContentView(articleView)
+        val listView: ListView = findViewById(R.id.list_view) as ListView
+        listView.adapter = listAdapter
     }
 
+    private fun dummyArticle(title: String, userName: String): Article =
+            Article(id = "",
+                    title = title,
+                    url = "",
+                    user = User(id = "", name = userName, profileImageUrl = ""))
 
 
 }
