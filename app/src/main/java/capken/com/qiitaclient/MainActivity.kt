@@ -2,9 +2,11 @@ package capken.com.qiitaclient
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
+import android.widget.ProgressBar
 import capken.com.qiitaclient.client.ArticleClient
 import capken.com.qiitaclient.model.Article
 import capken.com.qiitaclient.model.User
@@ -36,6 +38,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private val progresBar: ProgressBar by lazy {
+        findViewById(R.id.progress_bar) as ProgressBar
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -59,9 +65,13 @@ class MainActivity : AppCompatActivity() {
         val button = findViewById(R.id.search_button) as Button
 
         button.setOnClickListener {
+            progresBar.visibility = View.VISIBLE
             articleClient.search(editText.text.toString())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .doAfterTerminate {
+                        progresBar.visibility = View.GONE
+                    }
                     .subscribe({
                         editText.text.clear()
                         listAdapter.articles = it

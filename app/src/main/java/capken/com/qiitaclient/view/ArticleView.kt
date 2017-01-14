@@ -10,6 +10,7 @@ import android.widget.TextView
 import capken.com.qiitaclient.R
 import capken.com.qiitaclient.bindView
 import capken.com.qiitaclient.model.Article
+import com.bumptech.glide.Glide
 
 /**
  * Created by ken on 2017/01/07.
@@ -35,8 +36,6 @@ class ArticleView : FrameLayout {
     fun setArticle(article: Article) {
         titleTextView.text = article.title
         userNameTextView.text = article.user.name
-
-        //TODO set image
-        profileImageView.setBackgroundColor(Color.YELLOW)
+        Glide.with(context).load(article.user.profileImageUrl).into(profileImageView)
     }
 }
